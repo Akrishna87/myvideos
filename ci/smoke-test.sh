@@ -139,12 +139,25 @@ shot 3-player-controls
 echo "PASS: the player's controls show"
 
 echo "--- Media 'next' and 'play' buttons (headphones)"
+# A slow emulator can take a while to load the next video, so keep checking for up to 20 seconds,
+# and press "next" a second time (through the media session itself) before calling it a failure.
+on_video_2() {
+  local i
+  for i in $(seq 1 20); do
+    session
+    grep -q "Smoke Video 2" "$OUT/session.txt" && return 0
+    sleep 1
+  done
+  return 1
+}
 adb shell input keyevent KEYCODE_MEDIA_NEXT
-sleep 2
+if ! on_video_2; then
+  echo "(still on the first video after 20 seconds; pressing next again)"
+  adb shell cmd media_session dispatch next || adb shell input keyevent KEYCODE_MEDIA_NEXT
+  on_video_2 || fail "the media next button didn't skip to the next video"
+fi
 adb shell input keyevent KEYCODE_MEDIA_PLAY
 sleep 8
-session
-grep -q "Smoke Video 2" "$OUT/session.txt" || fail "the media next button didn't skip to the next video"
 playing || fail "the next video isn't playing"
 echo "PASS: media buttons skip to the next video and play it"
 

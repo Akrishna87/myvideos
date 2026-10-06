@@ -8,7 +8,7 @@ show up by themselves.
 ## Installing it
 
 1. On your Android phone, open the
-   [latest build](https://github.com/Akrishna87/Akrishna87/releases/tag/video-player-latest)
+   [latest build](https://github.com/Akrishna87/myvideos/releases/tag/video-player-latest)
    and tap **MyVideos.apk** to download it.
 2. Open the downloaded file. Android will ask you to allow installing apps
    from your browser (or Files app). Allow it, then tap **Install**.
